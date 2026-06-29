@@ -1,0 +1,219 @@
+@import "tailwindcss";
+
+/* ── Design tokens — structured, block-based, adult-educational ─────────── */
+@theme {
+  --font-display: "Space Grotesk", system-ui, sans-serif;
+  --font-body: "Inter", system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, "SF Mono", monospace;
+  --font-hanzi: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei",
+    "Noto Sans SC", system-ui, sans-serif;
+
+  --color-ink: #1c1b22;
+  --color-ink-soft: #5b5966;
+  --color-line: #e4e2db;
+  --color-line-strong: #d2cfc5;
+  --color-surface: #ffffff;
+
+  /* A deeper, sophisticated accent set used for colour-coding, not candy. */
+  --color-grape: #4f46e5; /* indigo (primary) */
+  --color-grape-deep: #4338ca;
+  --color-bubble: #db2777; /* rose */
+  --color-tangerine: #ea580c; /* orange */
+  --color-sunshine: #b45309; /* amber-bronze */
+  --color-mint: #0d9488; /* teal */
+  --color-sky: #0284c7; /* blue */
+  --color-success: #059669;
+  --color-danger: #dc2626;
+}
+
+@layer base {
+  body {
+    margin: 0;
+    min-height: 100dvh;
+    font-family: var(--font-body);
+    color: var(--color-ink);
+    -webkit-font-smoothing: antialiased;
+    background-color: #f5f4f1;
+    /* faint graph-paper grid — structured, educational, not decorative */
+    background-image:
+      linear-gradient(to right, rgba(28, 27, 34, 0.04) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(28, 27, 34, 0.04) 1px, transparent 1px);
+    background-size: 30px 30px;
+  }
+  h1, h2, h3, h4 {
+    font-family: var(--font-display);
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    color: var(--color-ink);
+  }
+  code {
+    font-family: var(--font-mono);
+  }
+  :focus-visible {
+    outline: 2px solid var(--color-grape);
+    outline-offset: 2px;
+  }
+}
+
+/* ── Block primitives ──────────────────────────────────────────────────── */
+@layer components {
+  /* Base block: flat white surface, crisp border, minimal lift. */
+  .clay {
+    border-radius: 12px;
+    background: var(--color-surface);
+    border: 1px solid var(--color-line);
+    box-shadow: 0 1px 1px rgba(28, 27, 34, 0.03), 0 2px 6px rgba(28, 27, 34, 0.04);
+  }
+
+  /* Colour-coded block; set --tint to an accent. Flat tint + matching border. */
+  .clay-tint {
+    border-radius: 12px;
+    background: color-mix(in srgb, var(--tint, var(--color-grape)) 8%, white);
+    border: 1px solid color-mix(in srgb, var(--tint, var(--color-grape)) 26%, var(--color-line));
+  }
+
+  /* Recessed well for inputs. */
+  .clay-inset {
+    border-radius: 8px;
+    background: #fbfaf8;
+    border: 1px solid var(--color-line-strong);
+    transition: border-color 120ms ease, box-shadow 120ms ease;
+  }
+  .clay-inset:focus,
+  .clay-inset:focus-within {
+    outline: none;
+    border-color: var(--color-grape);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-grape) 16%, transparent);
+  }
+
+  /* Solid block button. Flat fill, hairline darker border, crisp press. */
+  .clay-btn {
+    --btn: var(--color-grape);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.45rem;
+    cursor: pointer;
+    border-radius: 8px;
+    padding: 0.6rem 1.05rem;
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 0.94rem;
+    letter-spacing: -0.01em;
+    color: white;
+    background: var(--btn);
+    border: 1px solid color-mix(in srgb, var(--btn) 72%, black);
+    box-shadow: 0 1px 2px rgba(28, 27, 34, 0.14);
+    transition: transform 110ms ease, filter 110ms ease, background 110ms ease;
+  }
+  .clay-btn:hover {
+    filter: brightness(1.07);
+  }
+  .clay-btn:active {
+    transform: translateY(1px);
+    box-shadow: none;
+  }
+  .clay-btn:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
+
+  /* Secondary: neutral outlined block. */
+  .clay-btn-soft {
+    color: var(--color-ink);
+    background: var(--color-surface);
+    border: 1px solid var(--color-line-strong);
+    box-shadow: none;
+  }
+  .clay-btn-soft:hover {
+    filter: none;
+    background: #f1efe9;
+  }
+
+  /* Reading token: a flat block that highlights on hover/active (no squish). */
+  .hanzi-chip {
+    font-family: var(--font-hanzi);
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    border-radius: 5px;
+    padding: 0.05rem 0.28rem;
+    cursor: pointer;
+    border: 1px solid transparent;
+    transition: background 110ms ease, border-color 110ms ease;
+  }
+  .hanzi-chip:hover {
+    background: color-mix(in srgb, var(--color-grape) 9%, white);
+    border-color: color-mix(in srgb, var(--color-grape) 28%, white);
+  }
+  .hanzi-chip:active,
+  .hanzi-chip[data-active="true"] {
+    background: color-mix(in srgb, var(--color-grape) 15%, white);
+    border-color: var(--color-grape);
+  }
+
+  /* Technical tag/label — mono, uppercase, boxed. */
+  .pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    border-radius: 6px;
+    padding: 0.18rem 0.5rem;
+    font-family: var(--font-mono);
+    font-weight: 600;
+    font-size: 0.7rem;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    background: color-mix(in srgb, var(--tint, var(--color-grape)) 10%, white);
+    color: color-mix(in srgb, var(--tint, var(--color-grape)) 74%, black);
+    border: 1px solid color-mix(in srgb, var(--tint, var(--color-grape)) 28%, white);
+  }
+
+  /* Range slider — flat track, square-ish accent thumb. */
+  .clay-range {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: 6px;
+    border-radius: 3px;
+    cursor: pointer;
+    background: var(--color-line-strong);
+  }
+  .clay-range::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 20px;
+    height: 20px;
+    border-radius: 5px;
+    background: var(--color-grape);
+    border: 1px solid var(--color-grape-deep);
+    cursor: pointer;
+  }
+  .clay-range::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
+    border-radius: 5px;
+    background: var(--color-grape);
+    border: 1px solid var(--color-grape-deep);
+    cursor: pointer;
+  }
+}
+
+/* ── Motion (restrained) ───────────────────────────────────────────────── */
+@keyframes pop-in {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes sheet-up {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: none; }
+}
+.animate-pop { animation: pop-in 0.2s ease-out both; }
+.animate-sheet { animation: sheet-up 0.22s ease-out both; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

@@ -1,0 +1,27 @@
+# Node / Expo
+node_modules/
+.expo/
+dist/
+web-build/
+*.log
+npm-debug.*
+yarn-error.*
+
+# Env
+.env
+.env.local
+*.env
+
+# Go
+/server/bin/
+/server/tmp/
+*.test
+*.out
+
+# Piper TTS voices (downloaded via `make tts-setup`)
+/server/voices/
+
+# Editor / OS
+.DS_Store
+.idea/
+.vscode/
